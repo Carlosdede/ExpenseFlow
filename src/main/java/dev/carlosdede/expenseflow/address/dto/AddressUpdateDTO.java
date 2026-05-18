@@ -1,7 +1,6 @@
-package dev.carlosdede.expenseflow.user.dto;
+package dev.carlosdede.expenseflow.address.dto;
 
-public record AddressResponseDTO(
-
+public record AddressUpdateDTO(
         String zipCode,
         String street,
         String number,
@@ -9,6 +8,4 @@ public record AddressResponseDTO(
         String city,
         String state,
         String complement
-
-) {
-}
+) {}

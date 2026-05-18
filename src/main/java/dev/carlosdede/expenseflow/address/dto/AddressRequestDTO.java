@@ -1,4 +1,4 @@
-package dev.carlosdede.expenseflow.user.dto;
+package dev.carlosdede.expenseflow.address.dto;
 
 
 public record AddressRequestDTO(

@@ -46,27 +46,6 @@ public class UserEntity {
     @Column(name = "document", length = 20)
     private String document;
 
-    @Column(name = "zip_code", length = 10)
-    private String zipCode;
-
-    @Column(name = "street", length = 150)
-    private String street;
-
-    @Column(name = "number", length = 20)
-    private String number;
-
-    @Column(name = "neighborhood", length = 20)
-    private String neighborhood;
-
-    @Column(name = "city", length = 100)
-    private String city;
-
-    @Column(name = "state", length = 2)
-    private String state;
-
-    @Column(name = "complement", length = 255)
-    private String complement;
-
     @Column(name = "active", nullable = false)
     @NotNull
     private Boolean active;

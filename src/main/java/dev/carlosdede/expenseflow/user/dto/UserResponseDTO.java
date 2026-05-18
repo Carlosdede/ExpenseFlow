@@ -13,7 +13,6 @@ public record UserResponseDTO (
          String email,
          String phone,
          String document,
-         AddressResponseDTO address,
          LocalDateTime createdAt,
          LocalDateTime updatedAt
 ){}
