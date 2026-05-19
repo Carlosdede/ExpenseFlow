@@ -50,6 +50,7 @@ public class UserEntity {
     @NotNull
     private Boolean active;
 
+
     @Column(name = "created_at", nullable = false)
     @NotNull
     private LocalDateTime createdAt;

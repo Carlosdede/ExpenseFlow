@@ -4,13 +4,20 @@ package dev.carlosdede.expenseflow.address.entity;
 import dev.carlosdede.expenseflow.user.entity.UserEntity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
 
+@AllArgsConstructor
+@NoArgsConstructor
+@Data
+
 @Entity
 @Table(name = "address")
-public class addressEntity {
+public class AddressEntity {
     @Id
     private UUID id;
 

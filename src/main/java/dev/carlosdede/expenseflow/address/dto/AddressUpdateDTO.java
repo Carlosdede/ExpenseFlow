@@ -4,7 +4,7 @@ public record AddressUpdateDTO(
         String zipCode,
         String street,
         String number,
-        String district,
+        String neighborhood,
         String city,
         String state,
         String complement
