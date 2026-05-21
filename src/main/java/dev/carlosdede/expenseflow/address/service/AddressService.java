@@ -1,11 +1,11 @@
 package dev.carlosdede.expenseflow.address.service;
 
-import dev.carlosdede.expenseflow.address.dto.AddressRequestDTO;
 import dev.carlosdede.expenseflow.address.dto.AddressResponseDTO;
 import dev.carlosdede.expenseflow.address.entity.AddressEntity;
 import dev.carlosdede.expenseflow.address.mapper.AddressMapper;
 import dev.carlosdede.expenseflow.address.repository.AddressRepository;
 import dev.carlosdede.expenseflow.user.dto.UserCreateRequestDTO;
+import dev.carlosdede.expenseflow.user.entity.UserEntity;
 import org.springframework.stereotype.Service;
 
 
@@ -21,9 +21,10 @@ public class AddressService {
         this.addressMapper = addressMapper;
     }
 
-    public AddressResponseDTO createAddress(UserCreateRequestDTO userCreateRequestDTO, AddressRequestDTO addressRequestDTO) {
+    public AddressResponseDTO createAddress(UserCreateRequestDTO userCreateRequestDTO, UserEntity savedUser) {
         if(userCreateRequestDTO.addressRequestDTO() != null){
-            AddressEntity address = addressMapper.toEntity(addressRequestDTO);
+            AddressEntity address = addressMapper.toEntity(userCreateRequestDTO.addressRequestDTO());
+            address.setUser(savedUser);
             AddressEntity newAddress = addressRepository.save(address);
 
             return addressMapper.toDTO(newAddress);
