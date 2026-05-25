@@ -33,4 +33,8 @@ public class AddressService {
         return null;
     }
 
+    public AddressResponseDTO findByUser(UserEntity id){
+        return null;
+    }
+
 }

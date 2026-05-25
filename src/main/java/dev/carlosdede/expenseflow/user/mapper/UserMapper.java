@@ -1,6 +1,7 @@
 package dev.carlosdede.expenseflow.user.mapper;
 
 
+import dev.carlosdede.expenseflow.address.dto.AddressResponseDTO;
 import dev.carlosdede.expenseflow.address.entity.AddressEntity;
 import dev.carlosdede.expenseflow.address.mapper.AddressMapper;
 import dev.carlosdede.expenseflow.user.dto.UserCreateRequestDTO;
@@ -14,8 +15,10 @@ public class UserMapper {
 
     private final AddressMapper addressMapper;
 
+
     public UserMapper(AddressMapper addressMapper){
         this.addressMapper = addressMapper;
+
     }
 
     public UserEntity toEntity(UserCreateRequestDTO dto){
@@ -41,7 +44,7 @@ public class UserMapper {
 
     }
 
-    public UserResponseDTO toDTO(UserEntity user, AddressEntity address){
+    public UserResponseDTO toDTO(UserEntity user, AddressResponseDTO address){
         return new UserResponseDTO(
                 user.getId(),
                 user.getActive(),
@@ -49,7 +52,7 @@ public class UserMapper {
                 user.getEmail(),
                 user.getPhone(),
                 user.getDocument(),
-                addressMapper.toDTO(address),
+                address,
                 user.getCreatedAt(),
                 user.getUpdatedAt()
         );
