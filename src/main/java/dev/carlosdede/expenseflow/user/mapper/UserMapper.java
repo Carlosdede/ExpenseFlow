@@ -30,6 +30,7 @@ public class UserMapper {
         return entity;
     }
 
+
     public void updateEntity(UserEntity entity,UserUpdateRequestDTO dto){
         if(dto.name() != null){
             entity.setName(dto.name());
