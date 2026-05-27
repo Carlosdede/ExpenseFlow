@@ -2,6 +2,9 @@ package dev.carlosdede.expenseflow.user.service;
 
 import dev.carlosdede.expenseflow.address.dto.AddressResponseDTO;
 import dev.carlosdede.expenseflow.address.service.AddressService;
+import dev.carlosdede.expenseflow.common.exception.BusinessException;
+import dev.carlosdede.expenseflow.common.exception.EmailAlreadyExistsException;
+import dev.carlosdede.expenseflow.common.exception.ResourceNotFoundException;
 import dev.carlosdede.expenseflow.user.dto.*;
 import dev.carlosdede.expenseflow.user.entity.UserEntity;
 import dev.carlosdede.expenseflow.user.mapper.UserMapper;
@@ -33,7 +36,7 @@ public class UserService {
 
     public UserResponseDTO create(UserCreateRequestDTO userCreateRequestDTO){
         if(userRepository.existsByEmail(userCreateRequestDTO.email())){
-           throw new RuntimeException("Email já está em uso");
+           throw new EmailAlreadyExistsException("Email já está em uso");
         }
         UserEntity user = mapper.toEntity(userCreateRequestDTO);
         String passwordHash = passwordEncoder.encode(userCreateRequestDTO.password());
@@ -51,17 +54,17 @@ public class UserService {
     }
 
     public UserResponseDTO findById(UUID id) {
-        UserEntity user = userRepository.findById(id).orElseThrow(() -> new RuntimeException("Usurário não encontrado!"));
+        UserEntity user = userRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Usurário não encontrado!"));
         AddressResponseDTO addressResponseDTO = addressService.findByUser(user);
         return mapper.toDTO(user, addressResponseDTO);
     }
 
     public UserResponseDTO update(UUID id, UserUpdateRequestDTO userUpdateRequestDTO){
-        UserEntity user = userRepository.findById(id).orElseThrow(()-> new RuntimeException("Usuário não encontrado!"));
+        UserEntity user = userRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("Usuário não encontrado!"));
         if (userUpdateRequestDTO.email() != null
                 && !userUpdateRequestDTO.email().equals(user.getEmail())
                 && userRepository.existsByEmail(userUpdateRequestDTO.email())) {
-            throw new RuntimeException("Email já está em uso");
+            throw new EmailAlreadyExistsException("Email já está em uso");
         }
         mapper.updateEntity(user, userUpdateRequestDTO);
         UserEntity updatedUser = userRepository.save(user);
@@ -70,21 +73,21 @@ public class UserService {
     }
 
     public void delete(UUID id){
-        UserEntity user = userRepository.findById(id).orElseThrow(()-> new RuntimeException("Usuário não encontrado!"));
+        UserEntity user = userRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("Usuário não encontrado!"));
         userRepository.delete(user);
     }
 
     public void changePassword(UUID id, ChangePasswordDTO changePasswordDTO){
-        UserEntity user = userRepository.findById(id).orElseThrow(()-> new RuntimeException("Usuário não encontrado!"));
+        UserEntity user = userRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("Usuário não encontrado!"));
 
         boolean currentPasswordIsValid = passwordEncoder.matches(changePasswordDTO.currentPassword(), user.getPasswordHash());
         if (!currentPasswordIsValid){
-            throw  new RuntimeException("Senha atual inválida!");
+            throw  new BusinessException("Senha atual inválida!");
         }
 
         boolean newPasswordIsSameAsCurrent = passwordEncoder.matches(changePasswordDTO.newPassword(), user.getPasswordHash());
-        if (!newPasswordIsSameAsCurrent) {
-            throw new RuntimeException("A nova senha deve ser diferente da senha atual!");
+        if (newPasswordIsSameAsCurrent) {
+            throw new BusinessException("A nova senha deve ser diferente da senha atual!");
         }
 
         user.setPasswordHash(passwordEncoder.encode(changePasswordDTO.newPassword()));
@@ -92,10 +95,10 @@ public class UserService {
     }
 
     public void changeStatus(UUID id, ChangeUserStatusDTO changeUserStatusDTO){
-        UserEntity user = userRepository.findById(id).orElseThrow(()-> new RuntimeException("Usuário não encontrado!"));
+        UserEntity user = userRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("Usuário não encontrado!"));
         if (user.getActive().equals(changeUserStatusDTO.active())) {
             String status = changeUserStatusDTO.active() ? "ativo" : "desativado";
-            throw new RuntimeException("Usuário já está " + status + "!");
+            throw new BusinessException("Usuário já está " + status + "!");
         }
         user.setActive(changeUserStatusDTO.active());
         userRepository.save(user);
