@@ -7,7 +7,6 @@ import jakarta.validation.constraints.Size;
 
 public record UserUpdateRequestDTO (
 
-         @Size(max = 120)
          String name,
 
          @Email(message = "E-mail não é valido")
