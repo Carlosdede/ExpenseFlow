@@ -1,5 +1,4 @@
 package dev.carlosdede.expenseflow.user.mapper;
-import dev.carlosdede.expenseflow.address.dto.AddressRequestDTO;
 import dev.carlosdede.expenseflow.address.mapper.AddressMapper;
 import dev.carlosdede.expenseflow.user.dto.UserCreateRequestDTO;
 import dev.carlosdede.expenseflow.user.entity.UserEntity;
